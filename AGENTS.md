@@ -177,15 +177,35 @@ yarn dev:worker
 
 ## CI/CD (GitHub Actions)
 
-Der Workflow in `.github/workflows/ci.yml`:
+Der Workflow in `.github/workflows/ci.yml` führt bei jedem Push auf `main` aus:
+
 1. **verify**: `yarn typecheck` + `yarn build`
 2. **e2e**: Startet den Worker lokal, führt Playwright-Tests aus
+3. **deploy**: Deployt automatisch zu Cloudflare (nur auf `main`)
 
-Für Production-Deployments im CI:
-- Secrets im Repo unter **Settings → Secrets → Actions** hinterlegen:
-  - `CLOUDFLARE_API_TOKEN` (oder `CLOUDFLARE_ACCOUNT_ID` + `CLOUDFLARE_API_KEY`)
-  - Alle `VITE_*`-Werte (für den Build)
-  - `PORTFOLIO_LIGHTROOM_SHARE_URL` (für den Worker)
+### Secrets einrichten (für CI-Deploy)
+
+Gehe zu deinem GitHub-Repo → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**:
+
+| Secret Name | Wert | Woher |
+|-------------|------|-------|
+| `CLOUDFLARE_API_TOKEN` | Dein Cloudflare API Token | [Cloudflare Dashboard → API Tokens](https://dash.cloudflare.com/profile/api-tokens) (Create Token → "Edit Cloudflare Workers") |
+| `CLOUDFLARE_ACCOUNT_ID` | Deine Account-ID | `npx wrangler whoami` oder [Cloudflare Dashboard](https://dash.cloudflare.com) (rechts unten) |
+| `PORTFOLIO_LIGHTROOM_SHARE_URL` | Lightroom-URL | `https://lightroom.adobe.com/shares/YOUR_SHARE_ID` |
+| `VITE_PHOTOGRAPHER_NAME` | Name | z.B. `"Kateryna Hohol"` |
+| `VITE_PHOTOGRAPHER_BRAND` | Brand | z.B. `"FAMILIENSTORY"` |
+| `VITE_PHOTOGRAPHER_STREET` | Straße | z.B. `"Rosenhof 7"` |
+| `VITE_PHOTOGRAPHER_PLZ` | PLZ | z.B. `"09111"` |
+| `VITE_PHOTOGRAPHER_ORT` | Ort | z.B. `"Chemnitz"` |
+| `VITE_PHOTOGRAPHER_EMAIL` | E-Mail | z.B. `"hoholkateryna@gmail.com"` |
+| `VITE_PHOTOGRAPHER_WHATSAPP` | WhatsApp | z.B. `"+49 176 64094869"` |
+| `VITE_PHOTOGRAPHER_INSTAGRAM` | Instagram Handle | z.B. `"@kateryna.familienstory"` |
+| `VITE_PHOTOGRAPHER_INSTAGRAM_URL` | Instagram URL | z.B. `"https://instagram.com/kateryna.familienstory"` |
+| `VITE_WHATSAPP_MESSAGE` | WhatsApp Nachricht | z.B. `"Hallo, ich interessiere mich für ein Fotoshooting."` |
+
+**Nach dem Einrichten:**
+- Bei jedem Push auf `main` wird automatisch gebaut, getestet und deployed
+- Das Deploy erfolgt nur, wenn alle Tests grün sind
 
 ## Caching & Invalidation
 
