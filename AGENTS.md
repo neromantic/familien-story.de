@@ -13,7 +13,7 @@ Sensible Daten **niemals** in `.env` oder `wrangler.jsonc` committen. Stattdesse
 ```bash
 # Lightroom Share URL (wird vom Worker gelesen)
 npx wrangler secret put PORTFOLIO_LIGHTROOM_SHARE_URL
-# → Wert einfügen: https://lightroom.adobe.com/shares/1aa3c3ab75344ca7bc90826dc7043435
+# → Wert einfügen: https://lightroom.adobe.com/shares/YOUR_SHARE_ID
 
 # Optional: Admin-Credentials (für zukünftiges /kalvasinskyi-Panel)
 npx wrangler secret put ADMIN_NAME
@@ -29,16 +29,16 @@ Die folgenden Werte sind **öffentlich** (Impressum, Kontakt) und werden zur Bui
 
 ```bash
 # .env (lokal, git-ignored)
-VITE_PHOTOGRAPHER_NAME="Kateryna Hohol"
+VITE_PHOTOGRAPHER_NAME="Dein Name"
 VITE_PHOTOGRAPHER_BRAND="FAMILIENSTORY"
-VITE_PHOTOGRAPHER_STREET="Rosenhof 7"
-VITE_PHOTOGRAPHER_PLZ="09111"
-VITE_PHOTOGRAPHER_ORT="Chemnitz"
-VITE_PHOTOGRAPHER_EMAIL="hoholkateryna@gmail.com"
-VITE_PHOTOGRAPHER_WHATSAPP="+49 176 64094869"
-VITE_PHOTOGRAPHER_INSTAGRAM="@kateryna.familienstory"
-VITE_PHOTOGRAPHER_INSTAGRAM_URL="https://instagram.com/kateryna.familienstory"
-VITE_WHATSAPP_MESSAGE="Hallo Kateryna, ich interessiere mich für ein Fotoshooting und würde gern mehr erfahren."
+VITE_PHOTOGRAPHER_STREET="Deine Straße"
+VITE_PHOTOGRAPHER_PLZ="Deine PLZ"
+VITE_PHOTOGRAPHER_ORT="Dein Ort"
+VITE_PHOTOGRAPHER_EMAIL="deine@email.de"
+VITE_PHOTOGRAPHER_WHATSAPP="+49 123 4567890"
+VITE_PHOTOGRAPHER_INSTAGRAM="@dein_handle"
+VITE_PHOTOGRAPHER_INSTAGRAM_URL="https://instagram.com/dein_handle"
+VITE_WHATSAPP_MESSAGE="Hallo, ich interessiere mich für ein Fotoshooting und würde gern mehr erfahren."
 ```
 
 ## Deploy mit Custom Domain
