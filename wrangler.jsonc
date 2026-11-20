@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "familien-story",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-11-17",
+  // The Lightroom share URL is set via `wrangler secret put PORTFOLIO_LIGHTROOM_SHARE_URL`
+  // (or in the Cloudflare dashboard). It is NOT committed to the repo.
+  // Local dev reads from .env via `wrangler dev --env-file .env`.
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+  // Enable preview URLs for testing
+  "preview_urls": true
+}

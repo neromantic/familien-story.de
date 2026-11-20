@@ -1,0 +1,12 @@
+node_modules
+dist
+.wrangler
+.git
+.env
+.env.*
+.dev.vars
+*.tsbuildinfo
+.qwen
+artifacts
+test-results
+playwright-report

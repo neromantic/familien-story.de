@@ -1,0 +1,38 @@
+{
+  "name": "familien-story",
+  "version": "0.1.0",
+  "author": "Familien Story",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "dev:worker": "sh -c \"[ -f .env ] || printf 'PORTFOLIO_LIGHTROOM_SHARE_URL=https://lightroom.adobe.com/shares/1aa3c3ab75344ca7bc90826dc7043435\\n' > .env\" && yarn build && wrangler dev --ip 0.0.0.0 --port 8787 --env-file .env",
+    "build": "tsc -b && vite build",
+    "deploy": "yarn build && wrangler deploy",
+    "preview": "vite preview",
+    "typecheck": "tsc -b --noEmit",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.49.0",
+    "motion": "^14.14.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-localization": "^2.1.0",
+    "react-router-dom": "^7.18.4",
+    "tailwind-merge": "^3.7.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^26.6.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2",
+    "wrangler": "^4.164.0"
+  }
+}

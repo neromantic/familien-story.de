@@ -1,0 +1,52 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+      - run: yarn typecheck
+      - run: yarn build
+
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: corepack enable
+      - run: yarn install --frozen-lockfile
+      - run: npx playwright install --with-deps chromium
+      # The smoke suite runs against the real Worker (SPA fallback + the
+      # Lightroom proxy), so start it on :8787 and wait until it is up.
+      # `dev:worker` creates a local .env with the public share URL if
+      # missing (see package.json) and builds the frontend first.
+      - name: Start Worker
+        run: |
+          yarn dev:worker > worker.log 2>&1 &
+          for i in $(seq 1 90); do
+            curl -sf http://127.0.0.1:8787/ > /dev/null && break
+            if [ "$i" = 90 ]; then
+              echo "Worker did not come up in time";
+              cat worker.log;
+              exit 1;
+            fi
+            sleep 2
+          done
+      - run: PLAYWRIGHT_BASE_URL=http://127.0.0.1:8787 npx playwright test
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-test-results
+          path: test-results

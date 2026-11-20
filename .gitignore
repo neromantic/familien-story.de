@@ -1,0 +1,32 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+.DS_Store
+.qwen/
+.wrangler/
+.wrangler-*/
+.dist-root.bak/
+worker.log
+artifacts/
+test-results/
+playwright-report/
+# Local Copilot agent config — not part of the site; CI workflows stay tracked
+.github/agents/
+.github/copilot-instructions.md
+!.github/workflows/
+# Local design/research scratch — not part of the deployed site
+.preview/
+.playwright-mcp/
+dist.bak/
+node_modules.bak/
+redesign/
+ux-research/
+src/assets/images/redesign-*.jpg
+# The /prototype.html spec was a throwaway verification suite for the design
+# prototype; the main page now supersedes it.
+tests/smoke/prototype.spec.ts
+.idea/
+dist_old/
