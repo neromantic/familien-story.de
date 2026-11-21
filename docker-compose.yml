@@ -9,21 +9,12 @@ services:
       - "5173:5173"   # Vite Dev Server (HMR)
       - "8787:8787"   # Wrangler Dev Server
     volumes:
-      # Source code (HMR)
-      - ./src:/app/src:cached
-      - ./public:/app/public:cached
-      - ./index.html:/app/index.html:cached
-      - ./vite.config.ts:/app/vite.config.ts:cached
-      - ./tsconfig.json:/app/tsconfig.json:cached
-      - ./tsconfig.*.json:/app/tsconfig.*.json:cached
-      - ./package.json:/app/package.json:cached
-      - ./yarn.lock:/app/yarn.lock:cached
-      # Don't mount node_modules (use container's)
+      # Mount entire project for simplicity
+      - .:/app:cached
+      # Exclude node_modules and dist (use container's)
       - /app/node_modules
-      # Don't mount dist (build output)
       - /app/dist
-      # Environment variables
-      - ./.env:/app/.env:ro
+      - /app/dist-ssr
     environment:
       - NODE_ENV=development
       - VITE_PHOTOGRAPHER_NAME=${VITE_PHOTOGRAPHER_NAME:-Kateryna Hohol}

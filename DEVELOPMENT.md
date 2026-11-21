@@ -13,7 +13,8 @@ docker compose up --build
 ## Was ist anders als vorher?
 
 - **Vite Dev Server** läuft im Container mit `server.host: '0.0.0.0'`
-- **Volume Mounts** sind so konfiguriert, dass Dateiänderungen sofort erkannt werden
+- **Volume Mount**: Gesamtes Projekt wird gemounted (`.:./app:cached`)
+- **Ausnahmen**: `node_modules`, `dist`, `dist-ssr` kommen aus dem Container (nicht vom Host)
 - **WebSocket** für HMR funktioniert durch explizite Port-Freigabe
 - **Kein Neustart** nötig bei Code-Änderungen
 
