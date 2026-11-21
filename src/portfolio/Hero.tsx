@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import LocalizedStrings from "react-localization";
-import { ArrowUpRight, Heart, Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { detectLang, langPath } from "./lang";
 import { LanguageSwitch } from "./LanguageSwitch";
 import headerDesktop from "@/assets/images/header-desktop.png";
@@ -143,9 +143,6 @@ export function Hero() {
         <a className="portfolio-button portfolio-button-light" href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer">
           <span>{strings.cta}</span><i><ArrowUpRight size={16} /></i>
         </a>
-      </div>
-      <div className="portfolio-hero-note">
-        <Heart size={16} strokeWidth={1.7} aria-hidden />{strings.subtitle}
       </div>
       <a className="portfolio-scroll-hint" href="#portfolio">
         <span>{strings.discover}</span><i aria-hidden />

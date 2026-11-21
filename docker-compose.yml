@@ -1,49 +1,51 @@
+version: '3.8'
+
 services:
   app:
-    image: node:24-bookworm
-    working_dir: /app
-    command:
-      - sh
-      - -c
-      - corepack enable && corepack prepare yarn@1.22.22 --activate && yarn install --frozen-lockfile && yarn dev:worker
-    networks:
-      default:
-        aliases:
-          - worker
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     ports:
-      - "8787:8787"
+      - "5173:5173"   # Vite Dev Server (HMR)
+      - "8787:8787"   # Wrangler Dev Server
     volumes:
-      - .:/app
-      - node_modules:/app/node_modules
-    # Worker variables (e.g. PORTFOLIO_LIGHTROOM_SHARE_URL) are read from
-    # ./.env by `wrangler dev --env-file .env` (see package.json dev:worker).
-    healthcheck:
-      test:
-        - CMD
-        - node
-        - -e
-        - "fetch('http://127.0.0.1:8787').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
-      interval: 5s
-      timeout: 3s
-      retries: 20
-      start_period: 20s
-
-  smoke:
-    image: mcr.microsoft.com/playwright:v1.65.1-noble
-    working_dir: /app
-    profiles:
-      - test
-    depends_on:
-      app:
-        condition: service_healthy
+      # Source code (HMR)
+      - ./src:/app/src:cached
+      - ./public:/app/public:cached
+      - ./index.html:/app/index.html:cached
+      - ./vite.config.ts:/app/vite.config.ts:cached
+      - ./tsconfig.json:/app/tsconfig.json:cached
+      - ./tsconfig.*.json:/app/tsconfig.*.json:cached
+      - ./package.json:/app/package.json:cached
+      - ./yarn.lock:/app/yarn.lock:cached
+      # Don't mount node_modules (use container's)
+      - /app/node_modules
+      # Don't mount dist (build output)
+      - /app/dist
+      # Environment variables
+      - ./.env:/app/.env:ro
     environment:
-      PLAYWRIGHT_BASE_URL: http://worker:8787
-      NO_PROXY: worker,app,localhost,127.0.0.1
-      no_proxy: worker,app,localhost,127.0.0.1
-    volumes:
-      - .:/app
-      - node_modules:/app/node_modules
-    command: ["yarn", "test:e2e"]
+      - NODE_ENV=development
+      - VITE_PHOTOGRAPHER_NAME=${VITE_PHOTOGRAPHER_NAME:-Kateryna Hohol}
+      - VITE_PHOTOGRAPHER_BRAND=${VITE_PHOTOGRAPHER_BRAND:-FAMILIENSTORY}
+      - VITE_PHOTOGRAPHER_STREET=${VITE_PHOTOGRAPHER_STREET:-Rosenhof 7}
+      - VITE_PHOTOGRAPHER_PLZ=${VITE_PHOTOGRAPHER_PLZ:-09111}
+      - VITE_PHOTOGRAPHER_ORT=${VITE_PHOTOGRAPHER_ORT:-Chemnitz}
+      - VITE_PHOTOGRAPHER_EMAIL=${VITE_PHOTOGRAPHER_EMAIL:-hoholkateryna@gmail.com}
+      - VITE_PHOTOGRAPHER_WHATSAPP=${VITE_PHOTOGRAPHER_WHATSAPP:-+49 176 64094869}
+      - VITE_PHOTOGRAPHER_INSTAGRAM=${VITE_PHOTOGRAPHER_INSTAGRAM:-@kateryna.familienstory}
+      - VITE_PHOTOGRAPHER_INSTAGRAM_URL=${VITE_PHOTOGRAPHER_INSTAGRAM_URL:-https://instagram.com/kateryna.familienstory}
+      - VITE_WHATSAPP_MESSAGE=${VITE_WHATSAPP_MESSAGE:-Hallo Kateryna, ich interessiere mich für ein Fotoshooting und würde gern mehr erfahren.}
+      - PORTFOLIO_LIGHTROOM_SHARE_URL=${PORTFOLIO_LIGHTROOM_SHARE_URL:-}
+    command: >
+      sh -c "yarn install && yarn dev"
+    networks:
+      - familien-network
+    restart: unless-stopped
+    # Enable HMR WebSocket
+    stdin_open: true
+    tty: true
 
-volumes:
-  node_modules:
+networks:
+  familien-network:
+    driver: bridge

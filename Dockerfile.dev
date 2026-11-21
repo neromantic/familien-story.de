@@ -1,0 +1,28 @@
+# Development Dockerfile mit HMR-Support
+FROM node:24-alpine
+
+# Install dependencies for file watching
+RUN apk add --no-cache git
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json yarn.lock ./
+
+# Install dependencies (will be cached unless package.json changes)
+RUN yarn install --frozen-lockfile
+
+# Copy the rest of the application
+COPY . .
+
+# Expose ports for Vite (HMR) and Wrangler
+EXPOSE 5173 8787
+
+# Set environment for development
+ENV NODE_ENV=development
+ENV HMR_HOST=0.0.0.0
+ENV HMR_PORT=5173
+
+# Default command: Start Vite dev server with HMR
+# Override in docker-compose.yml or with: docker compose run --rm app <command>
+CMD ["yarn", "dev"]
