@@ -1,0 +1,57 @@
+# robots.txt für Familien Story
+# https://familien-story.de/robots.txt
+
+User-agent: *
+Allow: /
+
+# Wichtige Seiten für SEO
+Allow: /impressum
+Allow: /datenschutz
+
+# Private Bereiche ausschließen (für Google & AI Crawler)
+Disallow: /q/
+Disallow: /kalvasinskyi
+Disallow: /api/
+
+# Sitemap angeben
+Sitemap: https://familien-story.de/sitemap.xml
+
+# Crawl-Delay für höfliches Crawling (optional)
+Crawl-delay: 1
+
+# Spezifische Regeln für Google-Bots
+User-agent: Googlebot
+Allow: /
+Disallow: /q/
+Disallow: /kalvasinskyi
+
+# Spezifische Regeln für Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /q/
+Disallow: /kalvasinskyi
+
+# Spezifische Regeln für AI-Crawler (ChatGPT, Claude, etc.)
+User-agent: GPTBot
+Allow: /
+Disallow: /q/
+Disallow: /kalvasinskyi
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /q/
+Disallow: /kalvasinskyi
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /q/
+Disallow: /kalvasinskyi
+Disallow: /api/
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /q/
+Disallow: /kalvasinskyi
+Disallow: /api/

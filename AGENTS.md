@@ -216,6 +216,79 @@ Gehe zu deinem GitHub-Repo → **Settings** → **Secrets and variables** → **
 
 Jede Antwort trägt `x-worker-cache: HIT|MISS` für Debugging.
 
+---
+
+## SEO & AI-Discovery Optimierung
+
+### ✅ Bereits eingerichtet:
+
+1. **Meta-Tags**: Title, Description, Keywords, Open Graph, Twitter Cards
+2. **Structured Data (Schema.org)**:
+   - `PhotographyBusiness` für Local SEO
+   - `Person` für die Fotografin
+   - `FAQPage` für Featured Snippets in Google
+3. **Sitemap**: `/sitemap.xml` mit allen öffentlichen Seiten
+4. **robots.txt**: Erlaubt Google & AI-Crawler (ChatGPT, Claude), blockiert private Bereiche
+
+### 📈 Nächste Schritte für bessere Sichtbarkeit:
+
+#### 1. Google Search Console einrichten (5 Min)
+
+1. Geh zu: https://search.google.com/search-console
+2. Logge dich mit deinem Google-Konto ein
+3. "Property hinzufügen" → `familien-story.de`
+4. Verifizierungsmethode wählen (DNS oder HTML-Tag)
+5. Nach Verifizierung: Sitemap einreichen unter "Sitemaps" → `sitemap.xml`
+
+**Nach 24-48h:** Google hat die Seite indexiert.
+
+#### 2. Google Business Profile erstellen (10 Min)
+
+1. Geh zu: https://www.google.com/business
+2. "Jetzt verwalten" → Business hinzufügen
+3. Daten eingeben:
+   - Name: `Familien Story`
+   - Kategorie: `Fotograf`
+   - Adresse: `Chemnitz, 09111` (oder Servicegebiet ohne Adresse)
+   - Telefon: `+49 176 64094869`
+   - Website: `https://familien-story.de`
+4. Fotos hochladen (Logo, Arbeitsproben)
+5. Verifizierung per Postkarte (dauert 3-5 Tage)
+
+**Vorteil:** Erscheint in Google Maps und lokalen Suchen.
+
+#### 3. Bing Webmaster Tools (optional, 5 Min)
+
+1. Geh zu: https://www.bing.com/webmasters
+2. Mit Microsoft-Konto anmelden
+3. Website hinzufügen und verifizieren
+4. Sitemap einreichen: `sitemap.xml`
+
+#### 4. AI-Discovery optimieren (ChatGPT, Claude, Perplexity)
+
+**Was AI-Modelle brauchen:**
+- ✅ Klare, strukturierte Inhalte (haben wir)
+- ✅ FAQ-Schema.org (haben wir)
+- ✅ Lokale Signale: Stadt, Region, Adresse (haben wir)
+- ✅ Autorität durch Backlinks
+
+**Backlinks aufbauen:**
+- Lokale Verzeichnisse (DasÖrtliche, 11880.com, GelbeSeiten)
+- Hochzeitsportale (Wedding.com, Braut.de)
+- Lokale Blogs in Chemnitz
+- Instagram Bio-Link zur Website
+
+#### 5. OG-Image erstellen (empfohlen)
+
+Erstelle ein 1200x630px Bild für Social Media Shares:
+- Text: "Familien Story — Familienfotografie Chemnitz"
+- Logo/Branding
+- Ein schönes Familienfoto als Hintergrund
+
+Speichern als `public/og-image.jpg` und deployen.
+
+---
+
 ## Rollback & Logs
 
 ```bash

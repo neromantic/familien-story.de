@@ -3,24 +3,139 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--
-      The default is the indexable portfolio at /. Client galleries (/q/*) and
-      the admin panel (/kalvasinskyi) set noindex at runtime (see GalleryPage /
-      AdminPage) since they are for invited recipients, not search discovery.
-    -->
+    
+    <!-- Primary Meta Tags -->
+    <title>Familien Story — Familienfotografie & Geburtsfotografie in Chemnitz</title>
+    <meta name="title" content="Familien Story — Familienfotografie & Geburtsfotografie in Chemnitz" />
+    <meta name="description" content="Ehrliche Familien- und Geburtsfotografie in Chemnitz. Babybauch, Birth Story, Newborn und das erste Jahr — behutsam, ungestellt und nah. Jetzt Termin vereinbaren!" />
+    <meta name="keywords" content="Familienfotografie, Geburtsfotografie, Babybauch, Newborn, Chemnitz, Sachsen, Fotografin, Familienfotos, Birth Story, Schwangerschaftsfotos" />
+    <meta name="author" content="Familien Story" />
     <meta name="robots" content="index, follow" />
-    <title>Familien Story — Baby, Geburt &amp; Familie</title>
-    <meta
-      name="description"
-      content="Ehrliche Familien- und Geburtsfotografie. Babybauch, Birth Story, Newborn und das erste Jahr — behutsam, ungestellt und nah."
-    />
+    <link rel="canonical" href="https://familien-story.de" />
+    
+    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://familien-story.de" />
-    <meta property="og:title" content="Familien Story — Fotografie" />
-    <meta
-      property="og:description"
-      content="Leise Geschichten vom Werden, Ankommen und Wachsen. Chemnitz."
-    />
+    <meta property="og:site_name" content="Familien Story" />
+    <meta property="og:title" content="Familien Story — Familienfotografie Chemnitz" />
+    <meta property="og:description" content="Ehrliche Familien- und Geburtsfotografie in Chemnitz. Ungegestellt, natürlich und voller Emotionen." />
+    <meta property="og:image" content="https://familien-story.de/og-image.jpg" />
+    <meta property="og:locale" content="de_DE" />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://familien-story.de" />
+    <meta name="twitter:title" content="Familien Story — Familienfotografie Chemnitz" />
+    <meta name="twitter:description" content="Ehrliche Familien- und Geburtsfotografie in Chemnitz. Ungegestellt, natürlich und voller Emotionen." />
+    <meta name="twitter:image" content="https://familien-story.de/og-image.jpg" />
+    
+    <!-- Google Site Verification (nach Einrichtung eintragen) -->
+    <!-- <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE" /> -->
+    
+    <!-- Structured Data (Schema.org) für LocalBusiness -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "PhotographyBusiness",
+      "name": "Familien Story",
+      "image": "https://familien-story.de/og-image.jpg",
+      "description": "Ehrliche Familien- und Geburtsfotografie in Chemnitz. Babybauch, Birth Story, Newborn und das erste Jahr.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Chemnitz",
+        "postalCode": "09111",
+        "addressCountry": "DE"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "50.8278",
+        "longitude": "12.9214"
+      },
+      "url": "https://familien-story.de",
+      "telephone": "+4917664094869",
+      "email": "hoholkateryna@gmail.com",
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "18:00"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Chemnitz"
+      },
+      "priceRange": "€€€",
+      "sameAs": [
+        "https://instagram.com/kateryna.familienstory"
+      ]
+    }
+    </script>
+    
+    <!-- Structured Data für Person (Fotografin) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Kateryna Hohol",
+      "jobTitle": "Familien- und Geburtsfotografin",
+      "url": "https://familien-story.de",
+      "image": "https://familien-story.de/about-me.webp",
+      "worksFor": {
+        "@type": "PhotographyBusiness",
+        "name": "Familien Story"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Chemnitz",
+        "addressCountry": "DE"
+      },
+      "sameAs": [
+        "https://instagram.com/kateryna.familienstory"
+      ]
+    }
+    </script>
+    
+    <!-- Structured Data für FAQ -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Was kostet ein Fotoshooting bei Familien Story?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Die Preise variieren je nach Shooting-Typ. Babybauch-Shootings starten bei 250€, Birth Story bei 450€, und Familien-Shootings bei 300€. Kontaktieren Sie uns für ein individuelles Angebot."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wo finden die Fotoshootings statt?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Wir shooten in Chemnitz und Umgebung – bei Ihnen zu Hause, in der Natur oder an Ihrem Wunschort. Auch Hausbesuche sind möglich."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie lange im Voraus muss ich buchen?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Für Birth Story empfehlen wir eine Buchung ab der 20. SSW. Für andere Shootings mindestens 2-4 Wochen im Voraus."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie lange dauert es bis ich meine Bilder bekomme?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Sie erhalten Ihre fertig bearbeiteten Bilder in 1-2 Wochen als Online-Galerie in voller Auflösung."
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
