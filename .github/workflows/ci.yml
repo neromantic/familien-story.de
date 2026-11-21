@@ -67,5 +67,16 @@ jobs:
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy --domain=familien-story.de
+        env:
+          PORTFOLIO_LIGHTROOM_SHARE_URL: ${{ secrets.PORTFOLIO_LIGHTROOM_SHARE_URL }}
+          VITE_PHOTOGRAPHER_NAME: ${{ secrets.VITE_PHOTOGRAPHER_NAME }}
+          VITE_PHOTOGRAPHER_BRAND: ${{ secrets.VITE_PHOTOGRAPHER_BRAND }}
+          VITE_PHOTOGRAPHER_STREET: ${{ secrets.VITE_PHOTOGRAPHER_STREET }}
+          VITE_PHOTOGRAPHER_PLZ: ${{ secrets.VITE_PHOTOGRAPHER_PLZ }}
+          VITE_PHOTOGRAPHER_ORT: ${{ secrets.VITE_PHOTOGRAPHER_ORT }}
+          VITE_PHOTOGRAPHER_EMAIL: ${{ secrets.VITE_PHOTOGRAPHER_EMAIL }}
+          VITE_PHOTOGRAPHER_WHATSAPP: ${{ secrets.VITE_PHOTOGRAPHER_WHATSAPP }}
+          VITE_PHOTOGRAPHER_INSTAGRAM: ${{ secrets.VITE_PHOTOGRAPHER_INSTAGRAM }}
+          VITE_PHOTOGRAPHER_INSTAGRAM_URL: ${{ secrets.VITE_PHOTOGRAPHER_INSTAGRAM_URL }}
+          VITE_WHATSAPP_MESSAGE: ${{ secrets.VITE_WHATSAPP_MESSAGE }}
