@@ -1,6 +1,6 @@
 import LocalizedStrings from "react-localization";
 import { cn } from "@/lib/utils";
-import { detectLang, setLang } from "./lang";
+import { detectLang, langPath, setLang } from "./lang";
 
 const strings = new LocalizedStrings({
   de: {
@@ -23,7 +23,8 @@ export function LanguageSwitch({ className }: { className?: string }) {
       aria-label={strings.ariaLabel}
       onClick={() => {
         setLang(nextLanguage);
-        window.location.reload();
+        const target = `${langPath(window.location.pathname, nextLanguage)}${window.location.search}${window.location.hash}`;
+        window.location.assign(target);
       }}
       className={cn(
         "inline-flex min-h-11 min-w-11 items-center justify-center border border-cream/70 px-3 text-[10px] font-medium tracking-[0.12em] uppercase transition-colors hover:bg-cream hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cream",

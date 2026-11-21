@@ -1,7 +1,7 @@
 import LocalizedStrings from "react-localization";
 import { Heart } from "lucide-react";
 import { BlurFade } from "@/components/magic-ui/blur-fade";
-import { detectLang } from "./lang";
+import { detectLang, langPath } from "./lang";
 import { InstagramIcon, WhatsAppIcon } from "./Icons";
 import aboutMe from "@/assets/images/about-me.webp";
 import { getWhatsAppUrl, INSTAGRAM_URL } from "./config";
@@ -25,6 +25,7 @@ const strings = new LocalizedStrings({
     chat: "Lass uns chatten",
     or: "oder",
     instagram: "@kateryna.familienstory",
+    more: "Mehr über mich",
   },
   ru: {
     heading: "Привет, я",
@@ -39,6 +40,7 @@ const strings = new LocalizedStrings({
     chat: "Давай общаться",
     or: "или",
     instagram: "@kateryna.familienstory",
+    more: "Подробнее обо мне",
   },
 });
 strings.setLanguage(detectLang());
@@ -114,6 +116,9 @@ export function AboutSection() {
                   {strings.instagram} <InstagramIcon className="size-4" />
                 </a>
               </div>
+              <a className="portfolio-about-more" href={langPath("/ueber-mich", detectLang())}>
+                {strings.more} →
+              </a>
             </BlurFade>
           </div>
         </div>

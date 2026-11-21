@@ -3,6 +3,7 @@ import { Hero } from "./Hero";
 import { MarqueeStrip } from "./MarqueeStrip";
 import { WorkSection } from "./WorkSection";
 import { AboutSection } from "./AboutSection";
+import { StoriesTeaser } from "./StoriesTeaser";
 import { ProcessSection } from "./ProcessSection";
 import { TestimonialSection } from "./TestimonialSection";
 import { ContactSection } from "./ContactSection";
@@ -60,6 +61,7 @@ export default function PortfolioPage() {
       <Hero />
       <MarqueeStrip />
       <WorkSection lightroomImages={lightroomImages} lightroomError={lightroomError} />
+      <StoriesTeaser />
       <AboutSection />
       <ProcessSection />
       <TestimonialSection />

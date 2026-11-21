@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "dev:worker": "sh -c \"[ -f .env ] || printf 'PORTFOLIO_LIGHTROOM_SHARE_URL=https://lightroom.adobe.com/shares/1aa3c3ab75344ca7bc90826dc7043435\\n' > .env\" && yarn build && wrangler dev --ip 0.0.0.0 --port 8787 --env-file .env",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/prerender.mjs",
     "deploy": "yarn build && wrangler deploy",
     "preview": "vite preview",
     "typecheck": "tsc -b --noEmit",

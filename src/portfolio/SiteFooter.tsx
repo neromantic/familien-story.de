@@ -1,6 +1,6 @@
 import LocalizedStrings from "react-localization";
 import { ArrowUpRight, MapPin } from "lucide-react";
-import { detectLang } from "./lang";
+import { detectLang, langPath } from "./lang";
 import { getWhatsAppUrl, INSTAGRAM_URL } from "./config";
 import { InstagramIcon, WhatsAppIcon } from "./Icons";
 
@@ -13,6 +13,7 @@ const strings = new LocalizedStrings({
     location: "Chemnitz",
     photographer: "Fotografie von Kateryna Hohol",
     portfolio: "Portfolio",
+    stories: "Stories",
     about: "Über mich",
     process: "Ablauf",
     contact: "Kontakt",
@@ -28,6 +29,7 @@ const strings = new LocalizedStrings({
     location: "Хемниц",
     photographer: "Фотография Катерины Гоголь",
     portfolio: "Портфолио",
+    stories: "Истории",
     about: "Обо мне",
     process: "Как всё проходит",
     contact: "Контакт",
@@ -48,6 +50,9 @@ strings.setLanguage(detectLang());
  * as in the reference artwork.
  */
 export function SiteFooter() {
+  const lang = detectLang();
+  const home = langPath("/", lang);
+
   return (
     <footer className="portfolio-footer">
       <div className="portfolio-footer-inner">
@@ -60,12 +65,13 @@ export function SiteFooter() {
             </p>
           </div>
           <nav className="portfolio-footer-nav" aria-label={strings.navLabel}>
-            <a href="#portfolio">{strings.portfolio}</a>
-            <a href="#about">{strings.about}</a>
-            <a href="#process">{strings.process}</a>
-            <a href="#contact">{strings.contact}</a>
+            <a href={`${home}#portfolio`}>{strings.portfolio}</a>
+            <a href={langPath("/leistungen", lang)}>{strings.stories}</a>
+            <a href={langPath("/ueber-mich", lang)}>{strings.about}</a>
+            <a href={`${home}#process`}>{strings.process}</a>
+            <a href={`${home}#contact`}>{strings.contact}</a>
           </nav>
-          <a href="#top" className="portfolio-back-top">
+          <a href={home} className="portfolio-back-top">
             {strings.backTop} <ArrowUpRight className="size-4" />
           </a>
         </div>
@@ -92,7 +98,7 @@ export function SiteFooter() {
               {strings.legal.map((l) => (
                 <a
                   key={l.label}
-                  href={l.href}
+                  href={langPath(l.href, lang)}
                 >
                   {l.label}
                 </a>

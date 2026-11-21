@@ -12,6 +12,12 @@ interface Env {
     fetch(request: Request): Promise<Response>;
   };
   PORTFOLIO_LIGHTROOM_SHARE_URL?: string;
+  /**
+   * JSON map of story key → Lightroom share URL, e.g.
+   * {"familystory":"https://lightroom.adobe.com/shares/…","birthstory":"…"}.
+   * `PORTFOLIO_LIGHTROOM_SHARE_URL` remains the fallback for `familystory`.
+   */
+  LIGHTROOM_SHARES?: string;
 }
 
 interface LightroomImage {
@@ -39,6 +45,15 @@ const LIST_TTL_SECONDS = 300;
 const IMAGE_TTL_SECONDS = 60 * 60 * 24 * 30;
 const IMAGE_CACHE_CONTROL = `public, max-age=${IMAGE_TTL_SECONDS}, immutable`;
 const LIST_CACHE_CONTROL = `public, max-age=${LIST_TTL_SECONDS}`;
+
+/** The story keys the site knows; anything else is a 404. */
+const STORY_KEYS = new Set([
+  "familystory",
+  "pregnancystory",
+  "birthstory",
+  "lovestory",
+  "yourstory",
+]);
 
 const json = (body: unknown, status = 200) =>
   Response.json(body, {
@@ -256,6 +271,51 @@ async function handlePortfolioImages(request: Request, env: Env): Promise<Respon
 }
 
 /**
+ * Resolve the Lightroom share URL for one story. The shares live in a single
+ * JSON secret (`LIGHTROOM_SHARES`), with the original portfolio share as the
+ * fallback for `familystory` so existing deployments keep working.
+ */
+function storyShareUrl(env: Env, story: string): string | null {
+  if (env.LIGHTROOM_SHARES) {
+    try {
+      const map = JSON.parse(env.LIGHTROOM_SHARES) as Record<string, unknown>;
+      const value = map[story];
+      if (typeof value === "string" && value.trim()) return value.trim();
+    } catch {
+      console.error("LIGHTROOM_SHARES is not valid JSON.");
+    }
+  }
+  if (story === "familystory" && env.PORTFOLIO_LIGHTROOM_SHARE_URL) {
+    return env.PORTFOLIO_LIGHTROOM_SHARE_URL;
+  }
+  return null;
+}
+
+/** Serve the photo list of a single story's Lightroom share. */
+async function handleStoryImages(
+  request: Request,
+  env: Env,
+  story: string,
+): Promise<Response> {
+  const shareUrl = storyShareUrl(env, story);
+  if (!shareUrl) return json({ configured: false, story });
+
+  const cached = await cacheLookup(request);
+  if (cached) return withCacheHeader(cached, true);
+
+  try {
+    const spaceId = await resolveSpaceId(shareUrl);
+    const images = await fetchPortfolioImages(spaceId);
+    const response = json({ configured: true, story, images });
+    response.headers.set("cache-control", LIST_CACHE_CONTROL);
+    await cacheStore(request, response);
+    return withCacheHeader(response, false);
+  } catch {
+    return json({ error: `Photos for ${story} could not be loaded from Lightroom.` }, 502);
+  }
+}
+
+/**
  * Serve one image rendition. Rendition paths are content-addressed, so the
  * response is cached as immutable for 30 days; a miss fetches it from Adobe
  * with the public client key a browser cannot send.
@@ -298,6 +358,15 @@ export default {
     const url = new URL(request.url);
     if (url.pathname === "/api/portfolio/images" && request.method === "GET") {
       return handlePortfolioImages(request, env);
+    }
+
+    const storyMatch = url.pathname.match(/^\/api\/stories\/([a-z]+)\/images$/);
+    if (storyMatch && request.method === "GET") {
+      const story = storyMatch[1];
+      if (!STORY_KEYS.has(story)) {
+        return json({ error: "Unknown story." }, 404);
+      }
+      return handleStoryImages(request, env, story);
     }
 
     const imageMatch = url.pathname.match(/^\/api\/img\/([a-f0-9]{32,})$/i);

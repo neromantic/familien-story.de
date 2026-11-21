@@ -1,0 +1,4 @@
+<!-- IndexNow Verification Key -->
+<!-- Generiere deinen Key unter: https://www.indexnow.org/generatekey -->
+<!-- Dann hier als reinen Hex-String ohne Kommentare eintragen -->
+<!-- Beispiel: abc123def456... -->

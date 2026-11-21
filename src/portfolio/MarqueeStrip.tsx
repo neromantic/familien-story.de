@@ -5,12 +5,12 @@ import { detectLang } from "./lang";
 
 const strings = new LocalizedStrings({
   de: {
-    label: "Angebot",
-    items: ["Familienreportagen", "Babybauch", "Homestorys", "Geburtsfotografie"],
+    label: "Stories",
+    items: ["FamilyStory", "PregnancyStory", "BirthStory", "LoveStory", "YourStory"],
   },
   ru: {
-    label: "Услуги",
-    items: ["Семейные истории", "Беременность", "Домашние истории", "Съёмка родов"],
+    label: "Истории",
+    items: ["FamilyStory", "PregnancyStory", "BirthStory", "LoveStory", "YourStory"],
   },
 });
 strings.setLanguage(detectLang());

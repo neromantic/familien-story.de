@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import LocalizedStrings from "react-localization";
 import { ArrowUpRight, Heart, Menu, X } from "lucide-react";
-import { detectLang } from "./lang";
+import { detectLang, langPath } from "./lang";
 import { LanguageSwitch } from "./LanguageSwitch";
 import headerDesktop from "@/assets/images/header-desktop.png";
 import headerMobile from "@/assets/images/header-mobile.png";
@@ -22,6 +22,7 @@ const strings = new LocalizedStrings({
     cta: "Geschichte festhalten",
     navCta: "Termin anfragen",
     work: "Arbeiten",
+    stories: "Stories",
     discover: "Entdecken",
     about: "Über mich",
     process: "Ablauf",
@@ -39,6 +40,7 @@ const strings = new LocalizedStrings({
     cta: "Сохранить вашу историю",
     navCta: "Записаться",
     work: "Работы",
+    stories: "Истории",
     discover: "Смотреть",
     about: "Обо мне",
     process: "Как всё проходит",
@@ -56,6 +58,7 @@ strings.setLanguage(detectLang());
 export function Hero() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const lang = detectLang();
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -91,7 +94,8 @@ export function Hero() {
         </a>
         <nav aria-label={strings.nav} className="portfolio-nav-desktop">
           <a href="#portfolio">{strings.work}</a>
-          <a href="#about">{strings.about}</a>
+          <a href={langPath("/leistungen", lang)}>{strings.stories}</a>
+          <a href={langPath("/ueber-mich", lang)}>{strings.about}</a>
           <a href="#process">{strings.process}</a>
           <a href="#contact">{strings.contact}</a>
           <a className="portfolio-nav-cta" href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer">
@@ -121,7 +125,8 @@ export function Hero() {
         inert={!menuOpen}
       >
         <a href="#portfolio" onClick={() => setMenuOpen(false)}>{strings.work}</a>
-        <a href="#about" onClick={() => setMenuOpen(false)}>{strings.about}</a>
+        <a href={langPath("/leistungen", lang)} onClick={() => setMenuOpen(false)}>{strings.stories}</a>
+        <a href={langPath("/ueber-mich", lang)} onClick={() => setMenuOpen(false)}>{strings.about}</a>
         <a href="#process" onClick={() => setMenuOpen(false)}>{strings.process}</a>
         <a href="#contact" onClick={() => setMenuOpen(false)}>{strings.contact}</a>
         <a className="portfolio-nav-cta" href={getWhatsAppUrl()} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)}>
