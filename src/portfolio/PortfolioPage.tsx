@@ -6,6 +6,7 @@ import { AboutSection } from "./AboutSection";
 import { ProcessSection } from "./ProcessSection";
 import { TestimonialSection } from "./TestimonialSection";
 import { ContactSection } from "./ContactSection";
+import { ContentSection } from "./ContentSection";
 import { SiteFooter } from "./SiteFooter";
 import {
   isLightroomPortfolioImage,
@@ -63,6 +64,7 @@ export default function PortfolioPage() {
       <AboutSection />
       <ProcessSection />
       <TestimonialSection />
+      <ContentSection />
       <ContactSection />
       <SiteFooter />
     </div>

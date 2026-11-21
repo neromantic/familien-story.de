@@ -1,0 +1,21 @@
+{
+  "name": "Familien Story",
+  "short_name": "Familien Story",
+  "description": "Ehrliche Familien- und Geburtsfotografie in Chemnitz. Babybauch, Birth Story, Newborn und das erste Jahr.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fdfbf7",
+  "theme_color": "#1a1512",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["photography", "lifestyle"],
+  "lang": "de",
+  "dir": "ltr"
+}
