@@ -7,6 +7,11 @@ declare const caches: {
   };
 };
 
+declare class ExecutionContext {
+  waitUntil(promise: Promise<unknown>): void;
+  passThroughOnException(): void;
+}
+
 interface Env {
   ASSETS: {
     fetch(request: Request): Promise<Response>;
@@ -239,6 +244,54 @@ async function cacheStore(request: Request, response: Response): Promise<void> {
   }
 }
 
+/**
+ * Precache all rendition URLs from a Lightroom image list. Runs in the
+ * background via waitUntil, so the response is sent immediately while the
+ * images are cached for subsequent requests.
+ */
+async function precacheImages(
+  images: LightroomImage[],
+  spaceId: string,
+  ctx: ExecutionContext,
+): Promise<void> {
+  const renditionUrls = new Set<string>();
+  for (const image of images) {
+    // Extract the raw path from the proxy URL
+    const thumbMatch = image.thumbnailUrl.match(/\/api\/img\/[a-f0-9]+\?path=(.+)$/);
+    const fullMatch = image.fullUrl.match(/\/api\/img\/[a-f0-9]+\?path=(.+)$/);
+    if (thumbMatch?.[1]) renditionUrls.add(decodeURIComponent(thumbMatch[1]));
+    if (fullMatch?.[1]) renditionUrls.add(decodeURIComponent(fullMatch[1]));
+  }
+
+  // Precache in parallel, but don't block the response
+  const precachePromises = Array.from(renditionUrls).map(async (path) => {
+    const url = `${LR_API_BASE}/spaces/${spaceId}/${path}`;
+    const request = new Request(url, {
+      headers: { "x-api-key": LR_API_KEY },
+      signal: AbortSignal.timeout(15_000),
+    });
+    try {
+      const response = await fetch(request);
+      if (!response.ok) return;
+      const buffer = await response.arrayBuffer();
+      const cacheKey = new Request(`https://familien-story.de/api/img/${spaceId}?path=${encodeURIComponent(path)}`);
+      const cacheResponse = new Response(buffer, {
+        headers: {
+          "content-type": response.headers.get("content-type") ?? "image/jpeg",
+          "cache-control": IMAGE_CACHE_CONTROL,
+          // Ensure the preview thumbnail is also cached with the same TTL
+          "x-precache": "true",
+        },
+      });
+      await caches.default.put(cacheKey, cacheResponse);
+    } catch (err) {
+      console.error(`precache failed for ${path}:`, err);
+    }
+  });
+
+  ctx.waitUntil(Promise.allSettled(precachePromises));
+}
+
 /** Mark where a response came from — useful for debugging and the smoke tests. */
 function withCacheHeader(response: Response, hit: boolean): Response {
   const headers = new Headers(response.headers);
@@ -252,7 +305,11 @@ function withCacheHeader(response: Response, hit: boolean): Response {
  * LIST_TTL_SECONDS. Invalidation is TTL-based: a short listing TTL plus
  * content-addressed rendition URLs, which never need purging.
  */
-async function handlePortfolioImages(request: Request, env: Env): Promise<Response> {
+async function handlePortfolioImages(
+  request: Request,
+  env: Env,
+  ctx: ExecutionContext,
+): Promise<Response> {
   if (!env.PORTFOLIO_LIGHTROOM_SHARE_URL) return json({ configured: false });
 
   const cached = await cacheLookup(request);
@@ -264,6 +321,8 @@ async function handlePortfolioImages(request: Request, env: Env): Promise<Respon
     const response = json({ configured: true, images });
     response.headers.set("cache-control", LIST_CACHE_CONTROL);
     await cacheStore(request, response);
+    // Precache all images in the background
+    precacheImages(images, spaceId, ctx);
     return withCacheHeader(response, false);
   } catch {
     return json({ error: "Portfolio photos could not be loaded from Lightroom." }, 502);
@@ -296,6 +355,7 @@ async function handleStoryImages(
   request: Request,
   env: Env,
   story: string,
+  ctx: ExecutionContext,
 ): Promise<Response> {
   const shareUrl = storyShareUrl(env, story);
   if (!shareUrl) return json({ configured: false, story });
@@ -309,6 +369,8 @@ async function handleStoryImages(
     const response = json({ configured: true, story, images });
     response.headers.set("cache-control", LIST_CACHE_CONTROL);
     await cacheStore(request, response);
+    // Precache all images in the background
+    precacheImages(images, spaceId, ctx);
     return withCacheHeader(response, false);
   } catch {
     return json({ error: `Photos for ${story} could not be loaded from Lightroom.` }, 502);
@@ -354,10 +416,10 @@ async function handleImageProxy(spaceId: string, url: URL, request: Request): Pr
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname === "/api/portfolio/images" && request.method === "GET") {
-      return handlePortfolioImages(request, env);
+      return handlePortfolioImages(request, env, ctx);
     }
 
     const storyMatch = url.pathname.match(/^\/api\/stories\/([a-z]+)\/images$/);
@@ -366,7 +428,7 @@ export default {
       if (!STORY_KEYS.has(story)) {
         return json({ error: "Unknown story." }, 404);
       }
-      return handleStoryImages(request, env, story);
+      return handleStoryImages(request, env, story, ctx);
     }
 
     const imageMatch = url.pathname.match(/^\/api\/img\/([a-f0-9]{32,})$/i);
